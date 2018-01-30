@@ -60,10 +60,7 @@ class QLearningAgent(ReinforcementAgent):
     if len(possibleActions) == 0:
     	return 0.0
 
-    "*** YOUR CODE HERE ***"
-    raise NotImplementedError
-
-    return 0.
+    return max(self.getQValue(state, action) for action in possibleActions)
     
   def getPolicy(self, state):
     """
@@ -76,12 +73,7 @@ class QLearningAgent(ReinforcementAgent):
     if len(possibleActions) == 0:
     	return None
     
-    best_action = None
-
-    "*** YOUR CODE HERE ***"
-    raise NotImplementedError
-
-    return best_action
+    return max((self.getQValue(state, action), action) for action in possibleActions)[1]
 
   def getAction(self, state):
     """
@@ -106,10 +98,10 @@ class QLearningAgent(ReinforcementAgent):
     #agent parameters:
     epsilon = self.epsilon
 
-    "*** YOUR CODE HERE ***"
-    raise NotImplementedError    
+    if util.flipCoin(epsilon):
+        return random.choice(possibleActions)
+    return self.getPolicy(state)
 
-    return action
 
   def update(self, state, action, nextState, reward):
     """
@@ -124,14 +116,8 @@ class QLearningAgent(ReinforcementAgent):
     gamma = self.discount
     learning_rate = self.alpha
     
-    "*** YOUR CODE HERE ***"
-    raise NotImplementedError
-    
-    reference_qvalue = PleaseImplementMe
-    updated_qvalue = PleaseImplementMe
-
-    self.setQValue(PleaseImplementMe,PleaseImplementMe,updated_qvalue)
-
+    self.setQValue(state, action, (1 - learning_rate)*self.getQValue(state, action) +\
+                                   learning_rate*(reward + gamma * self.getValue(nextState)))
 
 #---------------------#end of your code#---------------------#
 
